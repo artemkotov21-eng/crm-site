@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Артём Котов — порядок в данных CRM и отчётность, которой верят</title>
+<meta name="description" content="Аудит качества ведения CRM, настройка и доработка Битрикс24, управленческая отчётность и BI. 12 лет в коммерции на руководящих позициях.">
+<style>
+  :root{
+    --ink:#121519;
+    --ink-2:#434b57;
+    --ink-3:#737c8a;
+    --line:#e2dfd8;
+    --line-2:#efece6;
+    --bg:#f7f5f1;
+    --paper:#fff;
+    --accent:#b0421c;
+    --accent-2:#d9754a;
+    --soft:#fcf1ec;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,"Cascadia Mono","Roboto Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:700px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{margin:0;line-height:1.12;letter-spacing:-.025em;font-weight:660}
+  p{margin:0}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(247,245,241,.92);
+    backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:28px;height:62px}
+  .brand{font-weight:680;letter-spacing:-.02em;margin-right:auto;font-size:16px}
+  .brand span{color:var(--ink-3);font-weight:450}
+  nav .links{display:flex;gap:26px;font-size:14.5px;color:var(--ink-2)}
+  nav .links a:hover{color:var(--accent)}
+  .tg{padding:9px 18px;background:var(--ink);color:#fff;border-radius:2px;font-size:14.5px;font-weight:550}
+  .tg:hover{background:var(--accent)}
+  @media(max-width:860px){nav .links{display:none}}
+
+  /* hero */
+  header{padding:86px 0 0}
+  h1{font-size:clamp(32px,5.6vw,60px);max-width:17em}
+  .lede{font-size:clamp(17.5px,1.9vw,21px);color:var(--ink-2);margin-top:26px;max-width:33em}
+  .hero-cta{margin-top:36px;display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-block;padding:15px 28px;border-radius:2px;font-size:16px;font-weight:560;
+    background:var(--ink);color:#fff;border:1px solid var(--ink)}
+  .btn:hover{background:var(--accent);border-color:var(--accent)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .nums{margin-top:72px;border-top:1px solid var(--line);display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .nums div{padding:26px 26px 30px 0}
+  .nums b{display:block;font-size:clamp(26px,3.4vw,36px);font-weight:660;letter-spacing:-.035em}
+  .nums small{display:block;margin-top:6px;font-size:13.5px;color:var(--ink-3);line-height:1.42}
+
+  /* strip */
+  .strip{margin-top:12px;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:var(--paper);padding:13px 0;white-space:nowrap}
+  .strip em{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-3);font-style:normal;padding:0 20px}
+
+  section{padding:84px 0;border-bottom:1px solid var(--line)}
+  .sec-head{max-width:30em}
+  .sec-head h2{font-size:clamp(25px,3.4vw,38px);margin-top:16px}
+  .sec-head p{margin-top:20px;color:var(--ink-2);max-width:33em}
+
+  /* signs */
+  .signs{margin-top:52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line)}
+  .signs div{background:var(--paper);padding:26px 26px 28px}
+  .signs b{display:block;font-size:16.5px;font-weight:620;letter-spacing:-.01em}
+  .signs p{margin-top:9px;font-size:15.5px;color:var(--ink-2);line-height:1.52}
+
+  /* services */
+  .svc{margin-top:52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:20px}
+  .card{background:var(--paper);border:1px solid var(--line);padding:30px 28px 32px;display:flex;flex-direction:column}
+  .card.lead{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  .card h3{font-size:21px;margin-top:14px}
+  .card .price{margin-top:14px;font-size:25px;font-weight:660;letter-spacing:-.03em}
+  .card .price i{font-style:normal;font-size:14px;font-weight:450;color:var(--ink-3);margin-left:7px}
+  .card > p{margin-top:16px;font-size:15.5px;color:var(--ink-2);line-height:1.55}
+  .card ul{margin:20px 0 0;padding:0;list-style:none;font-size:15px;color:var(--ink-2)}
+  .card li{position:relative;padding-left:20px;margin-top:9px;line-height:1.5}
+  .card li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--accent-2)}
+  .card .foot{margin-top:auto;padding-top:24px;font-family:var(--mono);font-size:11.5px;
+    letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+
+  /* steps */
+  ol.steps{margin:52px 0 0;padding:0;list-style:none;counter-reset:s;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:34px 44px}
+  ol.steps li{counter-increment:s;padding-top:18px;border-top:2px solid var(--ink)}
+  ol.steps li::before{content:"0" counter(s);font-family:var(--mono);font-size:12px;
+    letter-spacing:.1em;color:var(--accent)}
+  ol.steps b{display:block;margin-top:10px;font-size:17.5px;font-weight:620;letter-spacing:-.012em}
+  ol.steps p{margin-top:9px;font-size:15.5px;color:var(--ink-2);line-height:1.52}
+
+  /* cases */
+  .cases{margin-top:52px;display:grid;gap:22px}
+  .case{background:var(--paper);border:1px solid var(--line);display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);align-items:stretch}
+  .case .txt{padding:34px 34px 36px}
+  .case h3{font-size:22px;margin-top:12px}
+  .case .row{margin-top:20px}
+  .case .row span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-3)}
+  .case .row p{margin-top:7px;font-size:15.5px;color:var(--ink-2);line-height:1.55}
+  .case .art{border-left:1px solid var(--line);background:var(--line-2);
+    display:flex;align-items:center;justify-content:center;padding:26px;min-height:270px}
+  .case .art svg{width:100%;height:auto;display:block}
+  @media(max-width:820px){
+    .case{grid-template-columns:1fr}
+    .case .art{border-left:0;border-top:1px solid var(--line);order:-1;min-height:0}
+  }
+
+  /* about */
+  .about{margin-top:46px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:56px}
+  .about .body p{margin-top:20px;color:var(--ink-2)}
+  .about .body p strong{color:var(--ink);font-weight:620}
+  .cv{border-top:2px solid var(--ink);padding-top:0}
+  .cv div{padding:18px 0;border-bottom:1px solid var(--line)}
+  .cv time{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-3)}
+  .cv b{display:block;margin-top:5px;font-size:15.5px;font-weight:620;letter-spacing:-.01em}
+  .cv p{margin-top:4px;font-size:14.5px;color:var(--ink-2);line-height:1.45}
+  @media(max-width:860px){.about{grid-template-columns:1fr;gap:40px}}
+
+  /* faq */
+  .faq{margin-top:46px;border-top:1px solid var(--line);max-width:800px}
+  details{border-bottom:1px solid var(--line)}
+  summary{padding:22px 40px 22px 0;font-size:17.5px;font-weight:600;cursor:pointer;
+    position:relative;list-style:none;letter-spacing:-.012em}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:6px;top:19px;font-size:22px;
+    font-weight:400;color:var(--accent);line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{padding:0 0 24px;color:var(--ink-2);max-width:40em;font-size:16px}
+
+  /* contact */
+  #contact{border-bottom:0;background:var(--ink);color:#fff;margin-top:0}
+  #contact .eyebrow{color:rgba(255,255,255,.5)}
+  #contact h2{color:#fff}
+  #contact .sec-head p{color:rgba(255,255,255,.72)}
+  #contact .btn{background:#fff;color:var(--ink);border-color:#fff}
+  #contact .btn:hover{background:var(--accent-2);border-color:var(--accent-2);color:#fff}
+  #contact .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+  #contact .btn.ghost:hover{background:#fff;color:var(--ink);border-color:#fff}
+  .cta2{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px}
+  footer{background:var(--ink);color:rgba(255,255,255,.46);padding:0 0 54px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.04em}
+  footer .wrap{border-top:1px solid rgba(255,255,255,.14);padding-top:26px;
+    display:flex;flex-wrap:wrap;gap:12px 34px}
+
+  @media(max-width:640px){
+    body{font-size:16px}
+    .wrap{padding:0 20px}
+    header{padding:58px 0 0}
+    section{padding:58px 0}
+    .nums{margin-top:48px}
+    .card,.case .txt{padding:24px 22px 26px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="brand">Артём Котов <span>· Битрикс24 и отчётность</span></a>
+    <div class="links">
+      <a href="#services">Услуги</a>
+      <a href="#how">Как работаю</a>
+      <a href="#cases">Кейсы</a>
+      <a href="#faq">Вопросы</a>
+    </div>
+    <a class="tg" href="#contact">Обсудить задачу</a>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap">
+    <p class="eyebrow">Битрикс24 · качество данных · управленческая отчётность</p>
+    <h1 style="margin-top:22px">Навожу порядок в данных CRM и делаю отчётность, которой можно верить</h1>
+    <p class="lede">Для компаний, где CRM вроде бы внедрена, но руководитель всё равно считает в Excel, потому что цифрам в системе не доверяет. Облако и коробка.</p>
+    <div class="hero-cta">
+      <a class="btn" href="#contact">Обсудить задачу</a>
+      <a class="btn ghost" href="#services">Услуги и цены</a>
+    </div>
+    <div class="nums">
+      <div><b>12 лет</b><small>в коммерции на руководящих должностях</small></div>
+      <div><b>100+</b><small>сотрудников в подчинении на прошлой позиции</small></div>
+      <div><b>~20</b><small>серверных агентов в продакшене на коробке</small></div>
+      <div><b>70</b><small>графиков в последнем дашборде качества ведения</small></div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <em>Аудит качества ведения CRM</em><em>·</em><em>BI-Конструктор и Superset</em><em>·</em><em>Коробочный Битрикс24</em><em>·</em><em>Обмен с 1С</em><em>·</em><em>Серверные агенты на PHP</em><em>·</em><em>Телефония и оценка звонков</em>
+</div>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Для кого</p>
+      <h2>Если хотя бы три пункта про вас — нам есть о чём поговорить</h2>
+    </div>
+    <div class="signs">
+      <div><b>Отчёты не сходятся между собой</b><p>CRM показывает одно, выгрузка другое, 1С третье. Никто не может объяснить, какая цифра правильная.</p></div>
+      <div><b>Руководитель считает в Excel</b><p>Система есть, но решения принимаются по таблице, которую кто-то собирает руками каждую неделю.</p></div>
+      <div><b>Поля заполняются как попало</b><p>Сделки без компании и контакта, пустые направления, в справочнике шесть написаний одного значения.</p></div>
+      <div><b>Воронка не похожа на реальность</b><p>Стадии придумали при внедрении три года назад, менеджеры давно работают иначе, а отчёт строится по старым стадиям.</p></div>
+      <div><b>Дела копятся и просрочиваются</b><p>Тысячи незакрытых задач, часть висит на сделках, закрытых год назад. Понять, что действительно требует работы, невозможно.</p></div>
+      <div><b>Портал держится на одном человеке</b><p>Доработки писал подрядчик, который ушёл. Что внутри и как это починить, не знает никто.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Услуги и цены</p>
+      <h2>Четыре формата — от короткого разбора до полной отчётности</h2>
+      <p>Цена и срок фиксируются до начала работы. Никаких «часов внедрения» без конца: вы заранее знаете, что получите и сколько это стоит.</p>
+    </div>
+    <div class="svc">
+      <div class="card lead">
+        <p class="tag">С этого удобно начать</p>
+        <h3>Разбор: почему цифры не сходятся</h3>
+        <p class="price">35 000 ₽<i>3–5 дней</i></p>
+        <p>Нахожу, где именно расходятся данные, и объясняю на конкретных сделках и полях — без общих слов «надо всё настроить».</p>
+        <ul>
+          <li>Сверка отчётов, выгрузок и первичных данных</li>
+          <li>Поиск причины: настройка, доработка или дисциплина</li>
+          <li>Короткая записка: что сломано, почему, как починить</li>
+          <li>Если причина устраняется за час — починю сразу</li>
+        </ul>
+        <p class="foot">Дешёвый способ понять, стоит ли идти дальше</p>
+      </div>
+      <div class="card">
+        <p class="tag">Диагностика</p>
+        <h3>Аудит качества ведения CRM</h3>
+        <p class="price">90 000 ₽<i>2–3 недели</i></p>
+        <p>Полная картина состояния данных и плана, что с этим делать, в порядке приоритета.</p>
+        <ul>
+          <li>Отчёт с цифрами по каждому типу проблем</li>
+          <li>Дашборд качества ведения по сотрудникам — остаётся у вас</li>
+          <li>Клиенты на уволенных, дубли, брошенные карточки</li>
+          <li>План исправления: настройкой, доработкой или регламентом</li>
+        </ul>
+        <p class="foot">Фиксированная цена и срок</p>
+      </div>
+      <div class="card">
+        <p class="tag">Отчётность</p>
+        <h3>Управленческая отчётность и BI</h3>
+        <p class="price">от 150 000 ₽<i>3–5 недель</i></p>
+        <p>Дашборды, которым верит собственник. Главная работа не в графиках, а до них — чтобы цифры сошлись.</p>
+        <ul>
+          <li>Воронка, конверсия, работа менеджеров, клиентская база</li>
+          <li>Разрезы по подразделениям и направлениям</li>
+          <li>Ролевой доступ: менеджер видит себя, директор — всё</li>
+          <li>BI-Конструктор Битрикс24, SQL, Trino, Superset</li>
+        </ul>
+        <p class="foot">Облако и коробка</p>
+      </div>
+      <div class="card">
+        <p class="tag">Внедрение и разработка</p>
+        <h3>Настройка и доработка Битрикс24</h3>
+        <p class="price">по объёму<i>этапами</i></p>
+        <p>От воронок и прав доступа до серверного кода на коробке. Каждый этап — отдельная фиксированная цена.</p>
+        <ul>
+          <li>Воронки и стадии под реальный процесс, обязательные поля</li>
+          <li>Автоматизация роботами, телефония, права доступа</li>
+          <li>Коробка: агенты и обработчики событий на PHP, обмен с 1С</li>
+          <li>Разбор ошибок в доработках, которые писал кто-то другой</li>
+        </ul>
+        <p class="foot">Без аварийной поддержки «в любое время» — только плановые часы</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как работаю</p>
+      <h2>Понятный процесс — от звонка до передачи системы вам</h2>
+    </div>
+    <ol class="steps">
+      <li><b>Разговор, 30–40 минут</b><p>Что болит, что уже настроено, кто ведёт портал. Бесплатно и ни к чему не обязывает.</p></li>
+      <li><b>Честный ответ, нужен ли я</b><p>Если задача решается настройкой за вечер или вам выгоднее нанять штатного человека — скажу прямо.</p></li>
+      <li><b>Цена и срок до начала</b><p>Фиксирую объём, стоимость и дату. Что не входит — проговариваю отдельно, чтобы потом не было сюрпризов.</p></li>
+      <li><b>Доступ и первые находки</b><p>В первые дни обычно вскрывается то, о чём не знали. Показываю сразу, а не одним отчётом в конце.</p></li>
+      <li><b>Работа с бэкапом и проверкой</b><p>На коробке — резервная копия перед каждой правкой, проверка до записи, защита от конфликта изменений.</p></li>
+      <li><b>Передача с документацией</b><p>Что сделано, зачем, как поддерживать, как откатить. Система, которую может починить только автор, — плохая система.</p></li>
+      <li><b>Месяц на вопросы после сдачи</b><p>Без доплаты. Отвечаю, если что-то непонятно или ведёт себя не так, как договаривались.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Кейсы</p>
+      <h2>Что получалось на практике</h2>
+      <p>Проекты описаны без названий компаний — обязательства по конфиденциальности. Детали и цифры готов показать в разговоре.</p>
+    </div>
+
+    <div class="cases">
+      <div class="case">
+        <div class="txt">
+          <p class="tag">Производство · 200+ сотрудников</p>
+          <h3>Отчётность качества ведения CRM вместо ручных сводок</h3>
+          <div class="row"><span>Задача</span><p>Руководители отделов продаж не доверяли цифрам в CRM и каждую неделю собирали сводку руками. Данные по одному и тому же показателю в разных отчётах расходились.</p></div>
+          <div class="row"><span>Что сделал</span><p>Разобрал причины расхождений — от счётчиков, не реагирующих на фильтры, до стадий с неверной семантикой. Собрал отчёт из девяти вкладок и 70 графиков с ролевым доступом: менеджер видит себя, руководитель свой отдел, директор всё.</p></div>
+          <div class="row"><span>Результат</span><p>Ручные сводки больше не собираются. Качество ведения видно по каждому сотруднику, и его стало можно обсуждать на планёрке по цифрам, а не на ощущениях.</p></div>
+        </div>
+        <div class="art">
+          <svg viewBox="0 0 420 300" role="img" aria-label="Схема дашборда с графиками">
+            <rect x="0" y="0" width="420" height="300" fill="#fff" stroke="#e2dfd8"/>
+            <rect x="0" y="0" width="420" height="30" fill="#121519"/>
+            <circle cx="16" cy="15" r="3.2" fill="#d9754a"/><circle cx="27" cy="15" r="3.2" fill="#575f6b"/><circle cx="38" cy="15" r="3.2" fill="#575f6b"/>
+            <rect x="60" y="11" width="56" height="8" rx="1" fill="#454c57"/><rect x="124" y="11" width="42" height="8" rx="1" fill="#2b313a"/><rect x="174" y="11" width="48" height="8" rx="1" fill="#2b313a"/>
+            <rect x="16" y="46" width="118" height="54" fill="#fcf1ec" stroke="#f0d9cf"/>
+            <text x="28" y="76" font-family="monospace" font-size="21" fill="#b0421c">87%</text>
+            <rect x="28" y="84" width="56" height="5" rx="1" fill="#e0b8a7"/>
+            <rect x="146" y="46" width="118" height="54" fill="#f7f5f1" stroke="#e2dfd8"/>
+            <text x="158" y="76" font-family="monospace" font-size="21" fill="#121519">1 284</text>
+            <rect x="158" y="84" width="48" height="5" rx="1" fill="#cdc9c1"/>
+            <rect x="276" y="46" width="128" height="54" fill="#f7f5f1" stroke="#e2dfd8"/>
+            <text x="288" y="76" font-family="monospace" font-size="21" fill="#121519">312</text>
+            <rect x="288" y="84" width="62" height="5" rx="1" fill="#cdc9c1"/>
+            <rect x="16" y="116" width="200" height="168" fill="#f7f5f1" stroke="#e2dfd8"/>
+            <rect x="32" y="248" width="22" height="22" fill="#b0421c"/><rect x="62" y="226" width="22" height="44" fill="#b0421c"/>
+            <rect x="92" y="196" width="22" height="74" fill="#c9603a"/><rect x="122" y="178" width="22" height="92" fill="#d9754a"/>
+            <rect x="152" y="208" width="22" height="62" fill="#e3a186"/><rect x="182" y="238" width="22" height="32" fill="#eec2ad"/>
+            <line x1="26" y1="270" x2="206" y2="270" stroke="#cdc9c1"/>
+            <rect x="32" y="130" width="74" height="6" rx="1" fill="#b8b3aa"/>
+            <rect x="228" y="116" width="176" height="168" fill="#f7f5f1" stroke="#e2dfd8"/>
+            <rect x="242" y="130" width="62" height="6" rx="1" fill="#b8b3aa"/>
+            <polyline points="244,254 272,232 300,240 328,198 356,206 384,164" fill="none" stroke="#b0421c" stroke-width="2.4"/>
+            <polyline points="244,266 272,258 300,262 328,244 356,250 384,228" fill="none" stroke="#b8b3aa" stroke-width="1.6" stroke-dasharray="4 3"/>
+            <circle cx="384" cy="164" r="3.4" fill="#b0421c"/>
+            <line x1="238" y1="272" x2="394" y2="272" stroke="#cdc9c1"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="txt">
+          <p class="tag">Коробочный Битрикс24</p>
+          <h3>Автоматизация на стороне сервера и мониторинг, который сам себя проверяет</h3>
+          <div class="row"><span>Задача</span><p>Рутина, которую нельзя закрыть штатными роботами: дубли лидов от телефонии, дела, повисшие на закрытых сделках, процессы, молча останавливающиеся по ночам.</p></div>
+          <div class="row"><span>Что сделал</span><p>Около двадцати серверных агентов на PHP: дедупликация лидов, автозакрытие мёртвых дел, напоминания по срокам, выгрузки для BI. Плюс монитор, который следит за остальными агентами и сообщает, если кто-то завис или замолчал.</p></div>
+          <div class="row"><span>Результат</span><p>Сбои видно в день появления, а не через месяц по жалобе. Каждый агент описан в справочнике: что делает, где лежит, как починить — любой инженер подхватит без меня.</p></div>
+        </div>
+        <div class="art">
+          <svg viewBox="0 0 420 300" role="img" aria-label="Схема серверных агентов и мониторинга">
+            <rect x="0" y="0" width="420" height="300" fill="#fff" stroke="#e2dfd8"/>
+            <rect x="146" y="22" width="128" height="40" fill="#121519"/>
+            <text x="210" y="47" text-anchor="middle" font-family="monospace" font-size="12" fill="#fff">МОНИТОР</text>
+            <line x1="210" y1="62" x2="210" y2="86" stroke="#121519" stroke-width="1.6"/>
+            <line x1="76" y1="86" x2="344" y2="86" stroke="#121519" stroke-width="1.6"/>
+            <line x1="76" y1="86" x2="76" y2="106" stroke="#121519" stroke-width="1.6"/>
+            <line x1="210" y1="86" x2="210" y2="106" stroke="#121519" stroke-width="1.6"/>
+            <line x1="344" y1="86" x2="344" y2="106" stroke="#121519" stroke-width="1.6"/>
+            <g font-family="monospace" font-size="9.5" fill="#434b57" text-anchor="middle">
+              <rect x="22" y="106" width="108" height="36" fill="#fcf1ec" stroke="#e0b8a7"/>
+              <text x="76" y="128">дедупликация</text>
+              <rect x="156" y="106" width="108" height="36" fill="#fcf1ec" stroke="#e0b8a7"/>
+              <text x="210" y="128">оценка звонков</text>
+              <rect x="290" y="106" width="108" height="36" fill="#fcf1ec" stroke="#e0b8a7"/>
+              <text x="344" y="128">выгрузки BI</text>
+              <rect x="22" y="160" width="108" height="36" fill="#f7f5f1" stroke="#e2dfd8"/>
+              <text x="76" y="182">закрытие дел</text>
+              <rect x="156" y="160" width="108" height="36" fill="#f7f5f1" stroke="#e2dfd8"/>
+              <text x="210" y="182">напоминания</text>
+              <rect x="290" y="160" width="108" height="36" fill="#f7f5f1" stroke="#e2dfd8"/>
+              <text x="344" y="182">обмен с 1С</text>
+            </g>
+            <line x1="76" y1="142" x2="76" y2="160" stroke="#cdc9c1"/>
+            <line x1="210" y1="142" x2="210" y2="160" stroke="#cdc9c1"/>
+            <line x1="344" y1="142" x2="344" y2="160" stroke="#cdc9c1"/>
+            <rect x="22" y="222" width="376" height="56" fill="#f7f5f1" stroke="#e2dfd8"/>
+            <g font-family="monospace" font-size="9" fill="#737c8a">
+              <circle cx="40" cy="240" r="3.2" fill="#4a8a5c"/><text x="52" y="243">09:00  все агенты активны</text>
+              <circle cx="40" cy="260" r="3.2" fill="#b0421c"/><text x="52" y="263">09:30  агент замолчал — уведомление отправлено</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="txt">
+          <p class="tag">Телефония и контроль качества</p>
+          <h3>Оценка разговоров с клиентами без ручного прослушивания</h3>
+          <div class="row"><span>Задача</span><p>Руководитель не мог оценить качество разговоров: прослушивать все звонки некому, а выборочная проверка показывала случайную картину.</p></div>
+          <div class="row"><span>Что сделал</span><p>Настроил автоматическую оценку разговоров по скриптам продаж с отдельными сценариями под разные отделы. Отделил звонки, которые оценивать не нужно, — внутренние, короткие, без записи, — и вывел причину, почему оценки нет.</p></div>
+          <div class="row"><span>Результат</span><p>Оценка по каждому менеджеру в динамике, а не раз в квартал по трём звонкам. Видно, у кого проблема в скрипте, а у кого в дисциплине.</p></div>
+        </div>
+        <div class="art">
+          <svg viewBox="0 0 420 300" role="img" aria-label="Схема оценки звонков по менеджерам">
+            <rect x="0" y="0" width="420" height="300" fill="#fff" stroke="#e2dfd8"/>
+            <rect x="24" y="24" width="120" height="7" rx="1" fill="#b8b3aa"/>
+            <g font-family="monospace" font-size="10" fill="#434b57">
+              <text x="24" y="66">Иванов</text><rect x="120" y="56" width="212" height="13" fill="#f0ece6"/><rect x="120" y="56" width="186" height="13" fill="#b0421c"/><text x="344" y="66" fill="#121519">88%</text>
+              <text x="24" y="100">Петрова</text><rect x="120" y="90" width="212" height="13" fill="#f0ece6"/><rect x="120" y="90" width="158" height="13" fill="#c9603a"/><text x="344" y="100" fill="#121519">75%</text>
+              <text x="24" y="134">Сидоров</text><rect x="120" y="124" width="212" height="13" fill="#f0ece6"/><rect x="120" y="124" width="112" height="13" fill="#d9754a"/><text x="344" y="134" fill="#121519">53%</text>
+              <text x="24" y="168">Кузнецов</text><rect x="120" y="158" width="212" height="13" fill="#f0ece6"/><rect x="120" y="158" width="74" height="13" fill="#e3a186"/><text x="344" y="168" fill="#121519">35%</text>
+            </g>
+            <line x1="24" y1="196" x2="396" y2="196" stroke="#e2dfd8"/>
+            <text x="24" y="222" font-family="monospace" font-size="10" fill="#737c8a">НЕ ПОДЛЕЖАТ ОЦЕНКЕ</text>
+            <g font-family="monospace" font-size="9" fill="#737c8a">
+              <rect x="24" y="236" width="104" height="24" fill="#f7f5f1" stroke="#e2dfd8"/><text x="76" y="252" text-anchor="middle">внутренний</text>
+              <rect x="138" y="236" width="104" height="24" fill="#f7f5f1" stroke="#e2dfd8"/><text x="190" y="252" text-anchor="middle">короче 2 минут</text>
+              <rect x="252" y="236" width="104" height="24" fill="#f7f5f1" stroke="#e2dfd8"/><text x="304" y="252" text-anchor="middle">нет записи</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Обо мне</p>
+      <h2>Коммерческий руководитель, который умеет сделать сам</h2>
+    </div>
+    <div class="about">
+      <div class="body">
+        <p>Я не разработчик, пришедший к бизнесу со стороны кода. Двенадцать лет я руководил коммерческими функциями: пять лет возглавлял службу сервис-поддержки клиентов в федеральной логистической компании — больше ста сотрудников, все регионы России, план по выручке и сервисные метрики. Потом был коммерческим директором в финтех-компании и в системном интеграторе.</p>
+        <p>Всё это время я был заказчиком IT-проектов с другой стороны стола: рабочее место менеджера в 1С, электронные транспортные документы, модель прогноза рейсов, парсеры заявок с торговых площадок. Я знаю, как подрядчик продаёт лишнее, потому что мне это продавали.</p>
+        <p>Последний год делаю это руками сам — на портале производственной компании с несколькими сотнями сотрудников.</p>
+        <p><strong>Отсюда разница.</strong> Интегратор настроит воронки и уйдёт. Разработчик напишет код, который никто кроме него не поддержит. Я понимаю и то, как устроен Битрикс, и зачем вам эти цифры — потому что сам по таким цифрам принимал решения и отвечал за результат.</p>
+      </div>
+      <div class="cv">
+        <div><time>2025 — настоящее время</time><b>Производственная компания</b><p>Руководитель службы клиентского сервиса, цифровизация и отчётность</p></div>
+        <div><time>2025</time><b>Системный интегратор</b><p>Коммерческий директор, пять направлений продаж</p></div>
+        <div><time>2024 — 2025</time><b>Финтех-компания</b><p>Коммерческий директор, дочерняя структура крупного банка</p></div>
+        <div><time>2019 — 2024</time><b>Федеральная логистика</b><p>Директор службы сервис-поддержки клиентов, 100+ сотрудников</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Вопрос — ответ</p>
+      <h2>То, что спрашивают чаще всего</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Почему не как у интегратора — дешевле и быстрее?</summary>
+        <p>Потому что я работаю один и беру только те задачи, в которых разбираюсь. У интегратора есть менеджер, аккаунт, разработчик и их накладные расходы, и он вынужден продавать комплексное внедрение. Если вам нужно именно оно — вам к ним, и я честно об этом скажу. Если нужно разобраться с данными и отчётностью — это я делаю лучше и дешевле.</p>
+      </details>
+      <details>
+        <summary>А если проблема окажется не в CRM?</summary>
+        <p>Так бывает часто. Половина проблем с данными — это не настройка, а то, что менеджерам никто не объяснил, зачем заполнять поля, и никто не проверяет. В этом случае я так и скажу, и настраивать за ваши деньги то, что не поможет, не буду. План исправления всегда делится на три части: что чинится настройкой, что доработкой, а что только управленческим решением.</p>
+      </details>
+      <details>
+        <summary>Вы берёте поддержку портала?</summary>
+        <p>Плановыми часами — да, по согласованному графику. Аварийную поддержку с реакцией в любое время дня и ночи — нет. Я работаю один, и обещать то, чего не смогу выполнить, не буду. Если вам нужна круглосуточная поддержка, честнее взять на неё подрядчика с дежурной сменой.</p>
+      </details>
+      <details>
+        <summary>Что будет, если вы пропадёте посреди проекта?</summary>
+        <p>Поэтому я работаю этапами с фиксированной ценой и сдаю результат по каждому. Вы не платите за весь проект вперёд, и после каждого этапа у вас на руках готовая часть с документацией. Если мы разойдёмся, следующий человек подхватит по этой документации — она пишется для этого, а не для галочки.</p>
+      </details>
+      <details>
+        <summary>Работаете с коробкой или только с облаком?</summary>
+        <p>С обоими. Коробка мне ближе: там можно писать серверный код, агенты и прямые запросы к базе, а это ровно то, чем закрываются задачи, которые в облаке не решаются. На коробке работаю с бэкапом перед каждой правкой и проверкой до записи — ошибка в подключаемом файле кладёт весь портал, и я это проходил.</p>
+      </details>
+      <details>
+        <summary>Сколько времени нужно от меня?</summary>
+        <p>На старте — один разговор на 30–40 минут и доступ к порталу. Дальше в среднем час в неделю: показать текущие находки и принять решения, которые без вас не принять. Всё остальное делаю сам и не прихожу с вопросами, на которые могу найти ответ в системе.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Контакты</p>
+      <h2>Давайте поговорим</h2>
+      <p>Первый разговор бесплатный и ни к чему не обязывает. Напишите в двух словах, что происходит с вашей CRM, — отвечу, чем могу помочь и сколько это будет стоить.</p>
+    </div>
+    <div class="cta2">
+      <a class="btn" href="https://t.me/">Написать в Telegram</a>
+      <a class="btn ghost" href="tel:+79811930322">+7 981 193-03-22</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Артём Котов · Санкт-Петербург</span>
+    <span>Битрикс24 · управленческая отчётность · BI</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>
